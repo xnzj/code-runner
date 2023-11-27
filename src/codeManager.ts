@@ -200,6 +200,12 @@ export class CodeManager implements vscode.Disposable {
                 this._document.getText() : this._document.getText(selection);
 
             if (this._languageId === "php") {
+                // 获取项目根目录下 codeRunner.php 文件的内容
+                const codeRunnerPhpFile = join(this._workspaceFolder, "codeRunner.php");
+                if (fs.existsSync(codeRunnerPhpFile)) {
+                    const codeRunnerPhpContent = fs.readFileSync(codeRunnerPhpFile, "utf8");
+                    text = codeRunnerPhpContent + "\r\n" + text;
+                }
                 text = text.trim();
                 if (!text.startsWith("<?php")) {
                     text = "<?php\r\n" + text;
